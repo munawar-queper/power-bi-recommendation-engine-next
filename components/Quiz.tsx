@@ -13,6 +13,9 @@ const Quiz: React.FC = () => {
   const [showEmail, setShowEmail] = useState(false);
   const [email, setEmail] = useState('');
   const [recommendedCourse, setRecommendedCourse] = useState('');
+  const [aiResponse, setAiResponse] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [allSelectedOptions, setAllSelectedOptions] = useState<SelectedOption[]>([]);
 
   useEffect(() => {
     // Load initial questions
@@ -34,11 +37,14 @@ const Quiz: React.FC = () => {
     return score;
   };
 
-  const handleNext = (selectedOptions: SelectedOption[]) => {
+  const handleNext = async (selectedOptions: SelectedOption[]) => {
     if (!isContextQuestions) {
       const score = calculateScore(selectedOptions);
       setTotalScore(score);
       setShowEmail(true);
+      
+      // Store the first set of answers
+      setAllSelectedOptions(selectedOptions);
       
       // Load context questions
       fetch('/context.json')
@@ -48,6 +54,8 @@ const Quiz: React.FC = () => {
           setIsContextQuestions(true);
         });
     } else {
+      const combinedOptions = [...allSelectedOptions, ...selectedOptions];
+      
       // Determine recommended course
       let course = '';
       if (totalScore < 85) course = 'Power BI Essentials';
@@ -56,6 +64,53 @@ const Quiz: React.FC = () => {
       else course = 'Power BI DAX Essentials';
       
       setRecommendedCourse(course);
+      
+      // Load config questions for reference
+      const configQuestions = await fetch('/config.json').then(res => res.json());
+      
+      // Format answers string
+      const answersString = combinedOptions.map(option => {
+        const questionId = parseInt(option.name.split('-')[1]);
+        const question = isContextQuestions ? 
+          currentQuestions.find((q: Question) => q.id === questionId) :
+          configQuestions.find((q: Question) => q.id === questionId);
+        
+        const selectedOption = question?.options.find((opt: { id: number; text: string; score?: number }) => opt.id === parseInt(option.value));
+        const allOptions = question?.options
+          .filter((opt: { id: number; text: string; score?: number }) => opt.id !== parseInt(option.value))
+          .map((option: { text: string }) => option.text)
+          .join(', ');
+        
+        return `For "${question?.question}", they selected: "${selectedOption?.text}". Other options are ${allOptions}.`;
+      }).join('\n');
+      
+      // Make API call to our new endpoint
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/generate-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            score: totalScore,
+            course: course,
+            answers: answersString
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to generate message');
+        }
+
+        const data = await response.json();
+        setAiResponse(data.message);
+      } catch (error) {
+        console.error('Error generating message:', error);
+        setAiResponse('Unable to generate AI response at this time.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -84,19 +139,41 @@ const Quiz: React.FC = () => {
       </div>
 
       {recommendedCourse ? (
-        <Card className="border-2 border-[#0E8D7B]/20">
-          <CardContent className="pt-6 text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <BookOpen className="h-6 w-6 text-[#0E8D7B]" />
-              <h3 className="text-xl font-semibold text-[#0E8D7B]">
-                {recommendedCourse}
-              </h3>
-            </div>
-            <p className="text-gray-600">
-              Based on your responses, we've selected the perfect course to help you advance your Power BI skills.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          {!isLoading && (
+            <Card className="border-2 border-[#0E8D7B]/20">
+              <CardContent className="pt-6 text-center">
+                <div className="flex items-center justify-center space-x-3 mb-4">
+                  <BookOpen className="h-6 w-6 text-[#0E8D7B]" />
+                  <h3 className="text-xl font-semibold text-[#0E8D7B]">
+                    {recommendedCourse}
+                  </h3>
+                </div>
+                <p className="text-gray-600">
+                  Based on your responses, we've selected the perfect course to help you advance your Power BI skills.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* AI Response Card */}
+          <Card className="border-2 border-[#0E8D7B]/10">
+            <CardContent className="pt-6">
+              {isLoading ? (
+                <div className="text-center text-gray-600">
+                  <div className="animate-pulse">
+                    Calculating
+                    <span className="animate-[dots_1s_infinite]">...</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="prose prose-sm max-w-none">
+                  <p className="text-gray-700">{aiResponse}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       ) : (
         <Card className="border-none shadow-lg">
           <CardContent className="p-6">

@@ -23,4 +23,13 @@ export interface Question {
 export interface SelectedOption {
   name: string;
   value: string;
+}
+
+export interface OpenAIResponse {
+  id: string;
+  choices: {
+    message: {
+      content: string;
+    };
+  }[];
 } 
