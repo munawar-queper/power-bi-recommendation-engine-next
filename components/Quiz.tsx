@@ -150,7 +150,7 @@ const Quiz: React.FC = () => {
                   </h3>
                 </div>
                 <p className="text-gray-600">
-                  Based on your responses, we've selected the perfect course to help you advance your Power BI skills.
+                  Based on your responses, we&apos;ve selected the perfect course to help you advance your Power BI skills.
                 </p>
               </CardContent>
             </Card>
