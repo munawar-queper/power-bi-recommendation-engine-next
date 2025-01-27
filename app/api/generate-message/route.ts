@@ -10,7 +10,6 @@ const openai = new OpenAI({
 export async function POST(request: Request) {
   try {
     const { score, course, answers } = await request.json();
-    console.log(answers);
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
@@ -20,7 +19,7 @@ export async function POST(request: Request) {
         },
         {
           role: "user",
-          content: `The user scored ${score} points and is recommended the ${course} course. Here are their specific answers to the quiz:\n\n${answers}\n\nPlease provide a personalized response that acknowledges their current skill level and explains why the recommended course would be beneficial for them.`
+          content: `The user scored ${score} points and is recommended the ${course} course. Please provide a personalized response that acknowledges their current skill level and explains why the recommended course would be beneficial for them.`
         },
         {
             role: "assistant",
