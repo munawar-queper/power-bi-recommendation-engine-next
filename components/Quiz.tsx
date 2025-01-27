@@ -123,7 +123,7 @@ const Quiz: React.FC = () => {
               <Brain className="h-12 w-12 text-[#0E8D7B]" />
             </div>
             <p className="mt-2 text-gray-600">
-              Answer a few questions to get your personalized learning path
+              Answer a few questions to get your recommended course
             </p>
           </>
         ) : (
