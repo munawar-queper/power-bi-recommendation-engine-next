@@ -11,11 +11,6 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface Answer {
-  text: string;
-  value: number;
-}
-
 interface Props {
   questions: Question[];
   onSubmit: (selectedOptions: Array<{
