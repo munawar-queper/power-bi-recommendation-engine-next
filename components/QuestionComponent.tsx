@@ -16,15 +16,12 @@ interface Answer {
   value: number;
 }
 
-interface QuestionComponentProps {
-  question: string;
-  answers: Answer[];
-  onAnswerSelect: (value: number) => void;
-}
-
 interface Props {
   questions: Question[];
-  onSubmit: (selectedOptions: any[]) => void;
+  onSubmit: (selectedOptions: Array<{
+    name: string;
+    value: string;
+  }>) => void;
   showEmail: boolean;
   email: string;
   setEmail: (email: string) => void;
