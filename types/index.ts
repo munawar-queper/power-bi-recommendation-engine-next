@@ -7,8 +7,12 @@ export interface Option {
 export interface Question {
   id: number;
   question: string;
-  options: Option[];
-  inputType?: 'radio' | 'checkbox';
+  inputType: 'radio' | 'checkbox';
+  options: {
+    id: number;
+    text: string;
+    score: number;
+  }[];
   conditional?: boolean;
   dependsOn?: {
     questionId: number;

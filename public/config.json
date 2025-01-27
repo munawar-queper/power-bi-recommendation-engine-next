@@ -44,6 +44,21 @@
         ]
     },
     {
+        "id": 10,
+        "question": "Approach to Developing Reports in Power BI",
+        "inputType": "radio",
+        "options": [
+            {"id": 1, "text": "Rely mostly on intuition", "score": 5},
+            {"id": 2, "text": "Intuition with best-practice approaches", "score": 10},
+            {"id": 3, "text": "Structured, best-practice methodology", "score": 20}
+        ],
+        "conditional": true,
+        "dependsOn": {
+            "questionId": 4,
+            "optionIds": [3, 4]
+        }
+    },
+    {
         "id": 5,
         "question": "Comfort Level with Complex Data Sets",
         "inputType": "radio",
@@ -97,20 +112,5 @@
             {"id": 3, "text": "Moderately skilled", "score": 10},
             {"id": 4, "text": "Proficient", "score": 20}
         ]
-    },
-    {
-        "id": 10,
-        "question": "Approach to Developing Reports in Power BI",
-        "inputType": "radio",
-        "options": [
-            {"id": 1, "text": "Rely mostly on intuition", "score": 5},
-            {"id": 2, "text": "Intuition with best-practice approaches", "score": 10},
-            {"id": 3, "text": "Structured, best-practice methodology", "score": 20}
-        ],
-        "conditional": true,
-        "dependsOn": {
-            "questionId": 4,
-            "optionIds": [3, 4]
-        }
     }
 ]
