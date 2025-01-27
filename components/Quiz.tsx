@@ -1,6 +1,10 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Question, SelectedOption } from '../types';
 import QuestionComponent from './QuestionComponent';
+import { Card, CardContent } from "@/components/ui/card";
+import { Brain, BookOpen, Trophy } from "lucide-react";
 
 const Quiz: React.FC = () => {
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
@@ -57,18 +61,45 @@ const Quiz: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        {recommendedCourse ? (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Your Recommended Course
-            </h2>
-            <p className="text-xl text-accent font-semibold">
-              {recommendedCourse}
+      <div className="mb-8 text-center">
+        {!recommendedCourse ? (
+          <>
+            <div className="flex justify-center mb-4">
+              <Brain className="h-12 w-12 text-[#0E8D7B]" />
+            </div>
+            <p className="mt-2 text-gray-600">
+              Answer a few questions to get your personalized learning path
             </p>
-          </div>
+          </>
         ) : (
           <>
+            <div className="flex justify-center mb-4">
+              <Trophy className="h-12 w-12 text-[#F5B72F]" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Your Recommended Learning Path
+            </h2>
+          </>
+        )}
+      </div>
+
+      {recommendedCourse ? (
+        <Card className="border-2 border-[#0E8D7B]/20">
+          <CardContent className="pt-6 text-center">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <BookOpen className="h-6 w-6 text-[#0E8D7B]" />
+              <h3 className="text-xl font-semibold text-[#0E8D7B]">
+                {recommendedCourse}
+              </h3>
+            </div>
+            <p className="text-gray-600">
+              Based on your responses, we've selected the perfect course to help you advance your Power BI skills.
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="border-none shadow-lg">
+          <CardContent className="p-6">
             <QuestionComponent
               questions={currentQuestions}
               onSubmit={handleNext}
@@ -76,9 +107,9 @@ const Quiz: React.FC = () => {
               email={email}
               setEmail={setEmail}
             />
-          </>
-        )}
-      </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

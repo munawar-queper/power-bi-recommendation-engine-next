@@ -2,6 +2,7 @@
     {
         "id": 1,
         "question": "Current Proficiency in Data Analytics",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "Complete beginner", "score": 0},
             {"id": 2, "text": "Basic understanding", "score": 5},
@@ -12,6 +13,7 @@
     {
         "id": 2,
         "question": "Experience with Other BI Tools (like Excel, Tableau)",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "No experience", "score": 0},
             {"id": 2, "text": "Some experience", "score": 5},
@@ -22,6 +24,7 @@
     {
         "id": 3,
         "question": "Learning Background in Power BI",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "No prior training", "score": 0},
             {"id": 2, "text": "Self-taught", "score": 5},
@@ -32,6 +35,7 @@
     {
         "id": 4,
         "question": "Current Proficiency with Power BI",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "Never used it", "score": 0},
             {"id": 2, "text": "Consumed reports built by others", "score": 5},
@@ -42,6 +46,7 @@
     {
         "id": 5,
         "question": "Comfort Level with Complex Data Sets",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "Not Comfortable At All", "score": 0},
             {"id": 2, "text": "Slightly Comfortable", "score": 5},
@@ -52,6 +57,7 @@
     {
         "id": 6,
         "question": "Familiarity with Power Query",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "None", "score": 0},
             {"id": 2, "text": "Basic understanding", "score": 5},
@@ -62,6 +68,7 @@
     {
         "id": 7,
         "question": "Familiarity with Data Modeling Concepts",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "None", "score": 0},
             {"id": 2, "text": "Basic understanding", "score": 5},
@@ -72,6 +79,7 @@
     {
         "id": 8,
         "question": "Familiarity with Report Sharing & Security",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "None", "score": 0},
             {"id": 2, "text": "Basic understanding", "score": 5},
@@ -82,6 +90,7 @@
     {
         "id": 9,
         "question": "Familiarity with DAX",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "None", "score": 0},
             {"id": 2, "text": "Basic understanding", "score": 5},
@@ -92,6 +101,7 @@
     {
         "id": 10,
         "question": "Approach to Developing Reports in Power BI",
+        "inputType": "radio",
         "options": [
             {"id": 1, "text": "Rely mostly on intuition", "score": 5},
             {"id": 2, "text": "Intuition with best-practice approaches", "score": 10},

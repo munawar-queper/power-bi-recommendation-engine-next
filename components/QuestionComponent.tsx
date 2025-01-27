@@ -1,5 +1,15 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Question } from '../types';
+import { Card, CardContent } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Props {
   questions: Question[];
@@ -71,53 +81,101 @@ const QuestionComponent: React.FC<Props> = ({
   return (
     <div className="space-y-6">
       {questions.map(question => (
-        <div
+        <Card
           key={question.id}
-          className={`p-4 rounded-lg ${
-            errors.has(question.id) ? 'border-2 border-red-500' : 'border border-gray-200'
-          }`}
+          className={cn(
+            "transition-all duration-200",
+            errors.has(question.id) 
+              ? "border-destructive shadow-[0_0_0_1px] shadow-destructive" 
+              : "hover:border-primary/50"
+          )}
         >
-          <p className="font-semibold text-gray-800 mb-3">
-            {question.question}
-          </p>
-          <div className="space-y-2">
-            {question.options.map(option => (
-              <label key={option.id} className="flex items-center space-x-3">
-                <input
-                  type={question.inputType || 'radio'}
-                  name={`question-${question.id}`}
-                  value={option.id}
-                  onChange={(e) => handleOptionChange(question.id, e.target.value, e.target.checked)}
-                  className="form-checkbox h-4 w-4 text-accent"
-                />
-                <span className="text-gray-700">{option.text}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-2">
+              {errors.has(question.id) && (
+                <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              )}
+              <h3 className="font-semibold text-gray-800 mb-4">
+                {question.question}
+              </h3>
+            </div>
+
+            {question.inputType === 'radio' ? (
+              <RadioGroup
+                onValueChange={(value) => 
+                  handleOptionChange(question.id, value, true)
+                }
+                className="space-y-3"
+              >
+                {question.options.map(option => (
+                  <div key={option.id} className="flex items-center space-x-3">
+                    <RadioGroupItem
+                      value={option.id.toString()}
+                      id={`q${question.id}-${option.id}`}
+                      className="border-gray-300 text-[#0E8D7B]"
+                    />
+                    <Label
+                      htmlFor={`q${question.id}-${option.id}`}
+                      className="text-gray-700"
+                    >
+                      {option.text}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            ) : (
+              <div className="space-y-3">
+                {question.options.map(option => (
+                  <div key={option.id} className="flex items-center space-x-3">
+                    <Checkbox
+                      id={`q${question.id}-${option.id}`}
+                      value={option.id.toString()}
+                      onCheckedChange={(checked) =>
+                        handleOptionChange(question.id, option.id.toString(), !!checked)
+                      }
+                      className="border-gray-300 text-[#0E8D7B]"
+                    />
+                    <Label
+                      htmlFor={`q${question.id}-${option.id}`}
+                      className="text-gray-700"
+                    >
+                      {option.text}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       ))}
 
       {showEmail && (
-        <div className="mt-4">
-          <label className="block text-gray-700 mb-2">Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-accent focus:border-accent"
-            placeholder="Enter your email"
-          />
-        </div>
+        <Card className="mt-6">
+          <CardContent className="pt-6">
+            <Label htmlFor="email" className="text-gray-700">
+              Email Address
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-2"
+              placeholder="Enter your email"
+            />
+          </CardContent>
+        </Card>
       )}
 
-      <button
+      <Button
         onClick={handleSubmit}
-        className="w-full bg-accent hover:bg-accent/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+        className="w-full bg-[#0E8D7B] hover:bg-[#0E8D7B]/90 text-white"
+        size="lg"
       >
         {questions[0]?.inputType === 'checkbox' ? 'Submit' : 'Next'}
-      </button>
+      </Button>
     </div>
   );
 };
 
-export default QuestionComponent; 
+export default QuestionComponent;
