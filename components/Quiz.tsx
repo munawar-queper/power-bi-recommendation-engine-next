@@ -72,7 +72,7 @@ const Quiz: React.FC = () => {
     const combinedOptions = [...allSelectedOptions, ...selectedOptions];
 
     // Determine recommended course
-    let course: any = {};
+    let course = {};
     if (totalScore < 85)
       course = {
         name: "Power BI Essentials",
