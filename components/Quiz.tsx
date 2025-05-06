@@ -72,7 +72,7 @@ const Quiz: React.FC = () => {
     const combinedOptions = [...allSelectedOptions, ...selectedOptions];
 
     // Determine recommended course
-    let course = {};
+    let course = { name: "", url: "" };
     if (totalScore < 85)
       course = {
         name: "Power BI Essentials",
@@ -186,7 +186,8 @@ const Quiz: React.FC = () => {
               Let&apos;s Find Your Perfect Course
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-              Answer a few questions to get personalized Power BI course recommendations
+              Answer a few questions to get personalized Power BI course
+              recommendations
             </p>
           </>
         ) : (
@@ -230,19 +231,22 @@ const Quiz: React.FC = () => {
                         <BookOpen className="h-8 w-8 text-[#F1C714]" />
                       </div>
                     </div>
-                    
+
                     <div className="text-center space-y-3">
                       <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-800 animate-gradient-x transition-all duration-500">
                         {recommendedCourse.name}
                       </h3>
                       <p className="text-gray-600 max-w-2xl">
-                        Based on your responses, we've selected the perfect course to help you advance your Power BI skills.
+                        Based on your responses, we've selected the perfect
+                        course to help you advance your Power BI skills.
                       </p>
                     </div>
 
                     <div className="flex gap-4">
                       <button
-                        onClick={() => window.open(recommendedCourse.url, "_blank")}
+                        onClick={() =>
+                          window.open(recommendedCourse.url, "_blank")
+                        }
                         className="relative group/btn bg-[#F1C714] hover:bg-[#F1C714]/90 text-black font-semibold px-8 py-3 rounded-full 
                         shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center space-x-2 overflow-hidden"
                       >
