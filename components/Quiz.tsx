@@ -17,7 +17,7 @@ const Quiz: React.FC = () => {
     name: "",
     url: "",
   });
-  const [aiResponse, setAiResponse] = useState<string>("");
+  const [aiResponse, setAiResponse] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [allSelectedOptions, setAllSelectedOptions] = useState<
     SelectedOption[]
@@ -147,6 +147,11 @@ const Quiz: React.FC = () => {
       console.error("Error generating message:", error);
       setAiResponse("Unable to generate AI response at this time.");
     } finally {
+      // Scroll to top after setting the recommended course
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       setIsLoading(false);
     }
   };
@@ -278,8 +283,54 @@ const Quiz: React.FC = () => {
                 </div>
               ) : (
                 <div className="prose prose-lg max-w-none">
-                  <div className="text-gray-700 leading-relaxed">
-                    <ReactMarkdown>{aiResponse}</ReactMarkdown>
+                  <div className="text-gray-700 leading-relaxed space-y-6">
+                    {typeof aiResponse === "object" ? (
+                      <>
+                        <h1 className="text-3xl font-bold text-gray-900">
+                          {aiResponse.title}
+                        </h1>
+                        <div className="space-y-6">
+                          <section>
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                              Current Skills Assessment
+                            </h2>
+                            <p>{aiResponse.currentSkills}</p>
+                          </section>
+                          <section>
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                              Course Benefits
+                            </h2>
+                            <ul className="list-disc pl-6">
+                              {aiResponse.courseRecommendation?.benefits.map(
+                                (benefit: string, index: number) => (
+                                  <li key={index}>{benefit}</li>
+                                )
+                              )}
+                            </ul>
+                          </section>
+                          <section>
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                              Learning Outcomes
+                            </h2>
+                            <ul className="list-disc pl-6">
+                              {aiResponse.learningOutcomes?.map(
+                                (outcome: string, index: number) => (
+                                  <li key={index}>{outcome}</li>
+                                )
+                              )}
+                            </ul>
+                          </section>
+                          <section>
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                              Next Steps
+                            </h2>
+                            <p>{aiResponse.nextSteps}</p>
+                          </section>
+                        </div>
+                      </>
+                    ) : (
+                      <ReactMarkdown>{aiResponse}</ReactMarkdown>
+                    )}
                   </div>
                 </div>
               )}
