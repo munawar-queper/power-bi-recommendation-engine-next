@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import { Question, SelectedOption } from "../types";
+import { Question, SelectedOption, OpenAIResponse } from "../types";
 import QuestionComponent from "./QuestionComponent";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, BookOpen, Trophy, Sparkles } from "lucide-react";
@@ -17,7 +17,9 @@ const Quiz: React.FC = () => {
     name: "",
     url: "",
   });
-  const [aiResponse, setAiResponse] = useState<any>(null);
+  const [aiResponse, setAiResponse] = useState<OpenAIResponse | string | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [allSelectedOptions, setAllSelectedOptions] = useState<
     SelectedOption[]
@@ -281,7 +283,7 @@ const Quiz: React.FC = () => {
                   <div className="w-3 h-3 bg-[#F1C714] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
                   <div className="w-3 h-3 bg-[#F1C714] rounded-full animate-bounce"></div>
                 </div>
-              ) : (
+              ) : aiResponse && typeof aiResponse == "object" ? (
                 <div className="prose prose-lg max-w-none">
                   <div className="text-gray-700 leading-relaxed space-y-6">
                     {typeof aiResponse === "object" ? (
@@ -333,7 +335,7 @@ const Quiz: React.FC = () => {
                     )}
                   </div>
                 </div>
-              )}
+              ) : null}
             </CardContent>
           </Card>
         </motion.div>
