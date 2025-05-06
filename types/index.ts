@@ -7,7 +7,7 @@ export interface Option {
 export interface Question {
   id: number;
   question: string;
-  inputType: 'radio' | 'checkbox';
+  inputType: "radio" | "checkbox";
   options: {
     id: number;
     text: string;
@@ -26,10 +26,12 @@ export interface SelectedOption {
 }
 
 export interface OpenAIResponse {
-  id: string;
-  choices: {
-    message: {
-      content: string;
-    };
-  }[];
-} 
+  title: string;
+  currentSkills: string;
+  courseRecommendation: {
+    name: string;
+    benefits: string[];
+  };
+  learningOutcomes: string[];
+  nextSteps: string;
+}
