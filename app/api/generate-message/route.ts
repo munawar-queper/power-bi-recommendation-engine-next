@@ -17,19 +17,26 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "system",
-          content: `You are a Power BI expert. Create a structured response in the following JSON format:
+          content: `You are a Power BI expert. The following courses are available:
+          - Power BI Essentials
+          - Power BI Report Design
+          - Power BI Advanced
+          - Power BI DAX Essentials
+          - Power BI Service
+
+          Create a structured response in the following JSON format:
           {
             "title": "Your Learning Journey",
             "currentSkills": "Brief assessment of their skill level based on score",
             "courseRecommendation": {
-              "name": "Course name",
+              "name": "Course name (must be one of the available courses)",
               "benefits": ["benefit1", "benefit2", "benefit3"]
             },
             "learningOutcomes": ["outcome1", "outcome2", "outcome3"],
             "nextSteps": "Call to action message"
           }
           
-          Base this on their quiz score of ${score} and recommended course.`,
+          Base this on their quiz score of ${score} and recommended course. Ensure the recommended course is from the available courses list.`,
         },
         {
           role: "user",
