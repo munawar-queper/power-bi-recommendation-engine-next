@@ -7,6 +7,7 @@ import QuestionComponent from "./QuestionComponent";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, BookOpen, Trophy, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import LadderVisualization from "./LadderVisualization";
 
 const Quiz: React.FC = () => {
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
@@ -71,32 +72,32 @@ const Quiz: React.FC = () => {
     selectedOptions: SelectedOption[],
     configQuestions?: Question[]
   ) => {
-    const combinedOptions = [...allSelectedOptions, ...selectedOptions];    // Determine recommended course based on score
+    const combinedOptions = [...allSelectedOptions, ...selectedOptions]; // Determine recommended course based on score
     let course = { name: "", url: "" };
-    if (totalScore < 85) {
+    if (totalScore >= 180) {
       course = {
-        name: "Power BI Essentials",
+        name: "Power BI DAX Essentials",
         url: "https://powerbitraining.com.au/power-bi-basic-training-course/",
       };
-    } else if (totalScore < 120) {
+    } else if (totalScore >= 150) {
+      course = {
+        name: "Power BI Advanced",
+        url: "https://powerbitraining.com.au/power-bi-service-course/",
+      };
+    } else if (totalScore >= 120) {
       course = {
         name: "Power BI Report Design",
         url: "https://powerbitraining.com.au/power-bi-report-design-course/",
       };
-    } else if (totalScore < 150) {
+    } else if (totalScore >= 85) {
       course = {
-        name: "Power BI Advanced",
+        name: "Power BI Service",
         url: "https://powerbitraining.com.au/power-bi-advanced-training-course/",
-      };
-    } else if (totalScore < 180) {
-      course = {
-        name: "Power BI DAX Essentials",
-        url: "https://powerbitraining.com.au/dax-course/",
       };
     } else {
       course = {
-        name: "Power BI Service",
-        url: "https://powerbitraining.com.au/power-bi-service-course/",
+        name: "Power BI Essentials",
+        url: "https://powerbitraining.com.au/dax-course/",
       };
     }
 
@@ -172,7 +173,7 @@ const Quiz: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto w-full px-4 sm:px-6">
+    <div className="max-w-6xl mx-auto w-full px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -221,39 +222,39 @@ const Quiz: React.FC = () => {
           </>
         )}
       </motion.div>
-
       {recommendedCourse.name ? (
         <motion.div
-          className="space-y-6 sm:space-y-8 max-w-2xl mx-auto"
+          className="space-y-6 sm:space-y-8 max-w-6xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {!isLoading && (
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-75 transition-all duration-1000"></div>
-              <Card className="relative overflow-hidden bg-gradient-to-br from-white to-[#F1C714]/5 border-none shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-100/30 to-transparent animate-shimmer"></div>
-                <div className="px-4 sm:px-8 py-6 sm:py-10 relative">
-                  <div className="flex flex-col items-center space-y-6">
-                    <div className="relative">
-                      <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#F1C714]/20 to-[#F1C714]/40 blur transition-opacity duration-1000 ease-in-out opacity-75 animate-glow"></div>
-                      <div className="relative bg-white rounded-full p-4 shadow-lg">
-                        <BookOpen className="h-8 w-8 text-[#F1C714]" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Recommended Course */}
+              <div className="relative group h-full">
+                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-75 transition-all duration-1000"></div>
+                <Card className="relative overflow-hidden bg-gradient-to-br from-white to-[#F1C714]/5 border-none shadow-xl h-full">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-100/30 to-transparent animate-shimmer"></div>
+                  <div className="px-4 sm:px-8 py-6 sm:py-10 relative h-full">
+                    <div className="flex flex-col items-center space-y-6 h-full justify-center">
+                      <div className="relative">
+                        <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#F1C714]/20 to-[#F1C714]/40 blur transition-opacity duration-1000 ease-in-out opacity-75 animate-glow"></div>
+                        <div className="relative bg-white rounded-full p-4 shadow-lg">
+                          <BookOpen className="h-8 w-8 text-[#F1C714]" />
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="text-center space-y-3">
-                      <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-800 animate-gradient-x transition-all duration-500">
-                        {recommendedCourse.name}
-                      </h3>
-                      <p className="text-gray-600 max-w-2xl">
-                        Based on your responses, we've selected the perfect
-                        course to help you advance your Power BI skills.
-                      </p>
-                    </div>
+                      <div className="text-center space-y-3">
+                        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-800 animate-gradient-x transition-all duration-500">
+                          {recommendedCourse.name}
+                        </h3>
+                        <p className="text-gray-600 max-w-2xl">
+                          Based on your responses, we've selected the perfect
+                          course to help you advance your Power BI skills.
+                        </p>
+                      </div>
 
-                    <div className="flex gap-4">
                       <button
                         onClick={() =>
                           window.open(recommendedCourse.url, "_blank")
@@ -274,11 +275,23 @@ const Quiz: React.FC = () => {
                       </button>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                className="h-full"
+              >
+                <Card className="h-full border-none shadow-xl overflow-hidden">
+                  <LadderVisualization
+                    recommendedCourse={recommendedCourse.name}
+                  />
+                </Card>
+              </motion.div>
             </div>
           )}
-
           <Card className="border-none shadow-xl bg-white">
             <CardContent className="p-4 sm:p-8">
               {isLoading ? (
