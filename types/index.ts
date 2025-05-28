@@ -28,6 +28,7 @@ export interface SelectedOption {
 export interface OpenAIResponse {
   title: string;
   currentSkills: string;
+  ladderPositionDescription: string;
   courseRecommendation: {
     name: string;
     benefits: string[];

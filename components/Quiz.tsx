@@ -317,6 +317,12 @@ const Quiz: React.FC = () => {
                           </section>
                           <section>
                             <h2 className="text-2xl font-semibold text-gray-800">
+                              Your Position on the Learning Ladder
+                            </h2>
+                            <p>{aiResponse.ladderPositionDescription}</p>
+                          </section>
+                          <section>
+                            <h2 className="text-2xl font-semibold text-gray-800">
                               Course Benefits
                             </h2>
                             <ul className="list-disc pl-6">

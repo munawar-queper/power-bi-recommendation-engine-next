@@ -24,19 +24,22 @@ export async function POST(request: Request) {
           - Power BI DAX Essentials
           - Power BI Service
 
+          The user's current position will be shown on a visual ladder with 5 steps, each labeled with one of the above courses. The image highlights the user's recommended course as their current step, with higher steps representing more advanced expertise. The ladder visually shows progression from Essentials (bottom) to DAX (top).
+
           Create a structured response in the following JSON format:
           {
             "title": "Your Learning Journey",
             "currentSkills": "Brief assessment of their skill level based on score",
+            "ladderPositionDescription": "Describe the user's current position on the Power BI learning ladder image, referencing the step and what it means (e.g., 'You are on the third step: Power BI Report Design, which means you have solid foundational skills and are ready to focus on effective report building.')",
             "courseRecommendation": {
               "name": "Course name (must be one of the available courses)",
-              "benefits": ["benefit1", "benefit2", "benefit3"]
+              "benefits": ["Highlight 3 specific benefits of this course for the user, based on their skill level and the visual ladder position"]
             },
-            "learningOutcomes": ["outcome1", "outcome2", "outcome3"],
+            "learningOutcomes": ["List 3 outcomes the user will achieve after completing the course"],
             "nextSteps": "Call to action message"
           }
           
-          Base this on their quiz score of ${score} and recommended course. Ensure the recommended course is from the available courses list.`,
+          Base this on their quiz score of ${score}, the recommended course, and their answers. Ensure the recommended course is from the available courses list. Make the ladderPositionDescription match the visual representation of the user's current step on the ladder image.`,
         },
         {
           role: "user",
