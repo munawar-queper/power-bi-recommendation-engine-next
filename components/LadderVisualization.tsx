@@ -116,23 +116,31 @@ const LadderVisualization: React.FC<LadderVisualizationProps> = ({
             This visualization shows where you are on your Power BI learning
             journey
           </p>
-        </motion.div>
-
-        <motion.div
+        </motion.div>        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.8 }}
-          className="relative flex-grow min-h-[250px] sm:min-h-[300px] lg:min-h-[350px]"
+          className="relative flex-grow min-h-[250px] sm:min-h-[300px] lg:min-h-[350px] flex items-center justify-center"
         >
           <div className="absolute inset-0 bg-gradient-to-b from-yellow-50/50 to-transparent rounded-xl"></div>
-          <div className="relative w-full h-full max-w-xs sm:max-w-sm mx-auto">
-            <Image
-              src={`/${getImageNumber(recommendedCourse.name)}.png`}
-              alt="Your position on the Power BI learning ladder"
-              fill
-              className="object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-              priority
-            />
+          <div className="relative flex items-center justify-center w-full h-full z-10">
+            <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md">
+              <Image
+                src={`/${getImageNumber(recommendedCourse.name)}.png`}
+                alt="Your position on the Power BI learning ladder"
+                width={300}
+                height={400}
+                className="object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105 w-full h-auto"
+                priority
+                onError={(e) => {
+                  console.error('Image failed to load:', e);
+                  console.log('Attempted to load:', `/${getImageNumber(recommendedCourse.name)}.png`);
+                }}
+                onLoad={() => {
+                  console.log('Image loaded successfully:', `/${getImageNumber(recommendedCourse.name)}.png`);
+                }}
+              />
+            </div>
           </div>
         </motion.div>
 
