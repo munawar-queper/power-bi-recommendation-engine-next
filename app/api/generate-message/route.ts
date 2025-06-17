@@ -12,6 +12,7 @@ export const maxDuration = 60;
 export async function POST(request: Request) {
   try {
     const { score, course, answers } = await request.json();
+    console.log("Received data:", { score, course, answers });
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
             "nextSteps": "Call to action message"
           }
           
-          Base this on their quiz score of ${score}, the recommended course, and their answers. Ensure the recommended course is from the available courses list. Make the ladderPositionDescription match the visual representation of the user's current step on the ladder image based on the recommended course ${course}.`,
+          Base this on their quiz score of ${score}, the recommended course ${course}, and their answers. Make the ladderPositionDescription match the visual representation of the user's current step on the ladder image.`,
         },
         {
           role: "user",
