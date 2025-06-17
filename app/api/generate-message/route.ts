@@ -39,7 +39,7 @@ export async function POST(request: Request) {
             "nextSteps": "Call to action message"
           }
           
-          Base this on their quiz score of ${score}, the recommended course, and their answers. Ensure the recommended course is from the available courses list. Make the ladderPositionDescription match the visual representation of the user's current step on the ladder image.`,
+          Base this on their quiz score of ${score}, the recommended course, and their answers. Ensure the recommended course is from the available courses list. Make the ladderPositionDescription match the visual representation of the user's current step on the ladder image based on the recommended course ${course}.`,
         },
         {
           role: "user",
