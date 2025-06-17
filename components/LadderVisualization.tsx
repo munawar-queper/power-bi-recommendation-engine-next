@@ -29,7 +29,7 @@ const LadderVisualization: React.FC<LadderVisualizationProps> = ({
   };
 
   if (recommendedCourse) {
-    console.log(`Recommended Course: `, getImageNumber(recommendedCourse.name));
+    console.log(`Recommended Course: `, recommendedCourse);
   }
 
   return (
@@ -116,7 +116,8 @@ const LadderVisualization: React.FC<LadderVisualizationProps> = ({
             This visualization shows where you are on your Power BI learning
             journey
           </p>
-        </motion.div>        <motion.div
+        </motion.div>{" "}
+        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.8 }}
@@ -133,17 +134,22 @@ const LadderVisualization: React.FC<LadderVisualizationProps> = ({
                 className="object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105 w-full h-auto"
                 priority
                 onError={(e) => {
-                  console.error('Image failed to load:', e);
-                  console.log('Attempted to load:', `/${getImageNumber(recommendedCourse.name)}.png`);
+                  console.error("Image failed to load:", e);
+                  console.log(
+                    "Attempted to load:",
+                    `/${getImageNumber(recommendedCourse.name)}.png`
+                  );
                 }}
                 onLoad={() => {
-                  console.log('Image loaded successfully:', `/${getImageNumber(recommendedCourse.name)}.png`);
+                  console.log(
+                    "Image loaded successfully:",
+                    `/${getImageNumber(recommendedCourse.name)}.png`
+                  );
                 }}
               />
             </div>
           </div>
         </motion.div>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
