@@ -7,14 +7,13 @@ interface LadderVisualizationProps {
 
 const LadderVisualization: React.FC<LadderVisualizationProps> = ({
   recommendedCourse,
-}) => {
-  const getImageNumber = (course: string): string => {
+}) => {  const getImageNumber = (course: string): string => {
     const courseMap: Record<string, string> = {
-      "Power BI DAX Essentials": "1",
-      "Power BI Advanced": "2",
+      "Power BI Essentials": "1",
+      "Power BI Service": "2",
       "Power BI Report Design": "3",
-      "Power BI Service": "4",
-      "Power BI Essentials": "5",
+      "Power BI Advanced": "4",
+      "Power BI DAX Essentials": "5",
     };
     return courseMap[course] || "1";
   };

@@ -19,12 +19,12 @@ export async function POST(request: Request) {
           role: "system",
           content: `You are a Power BI expert. The following courses are available:
           - Power BI Essentials
+          - Power BI Service
           - Power BI Report Design
           - Power BI Advanced
           - Power BI DAX Essentials
-          - Power BI Service
 
-          The user's current position will be shown on a visual ladder with 5 steps, each labeled with one of the above courses. The image highlights the user's recommended course as their current step, with higher steps representing more advanced expertise. The ladder visually shows progression from Essentials (bottom) to DAX (top).
+          The user's current position will be shown on a visual ladder with 5 steps, each labeled with one of the above courses. The image highlights the user's recommended course as their current step, with higher steps representing more advanced expertise. The ladder visually shows progression from Essentials (bottom step 1) to DAX Essentials (top step 5).
 
           Create a structured response in the following JSON format:
           {
