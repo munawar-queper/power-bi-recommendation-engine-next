@@ -228,69 +228,25 @@ const Quiz: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {!isLoading && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Recommended Course */}
-              <div className="relative group h-full">
-                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-75 transition-all duration-1000"></div>
-                <Card className="relative overflow-hidden bg-gradient-to-br from-white to-[#F1C714]/5 border-none shadow-xl h-full">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-100/30 to-transparent animate-shimmer"></div>
-                  <div className="px-4 sm:px-8 py-6 sm:py-10 relative h-full">
-                    <div className="flex flex-col items-center space-y-6 h-full justify-center">
-                      <div className="relative">
-                        <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#F1C714]/20 to-[#F1C714]/40 blur transition-opacity duration-1000 ease-in-out opacity-75 animate-glow"></div>
-                        <div className="relative bg-white rounded-full p-4 shadow-lg">
-                          <BookOpen className="h-8 w-8 text-[#F1C714]" />
-                        </div>
-                      </div>
-
-                      <div className="text-center space-y-3">
-                        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-800 animate-gradient-x transition-all duration-500">
-                          {recommendedCourse.name}
-                        </h3>
-                        <p className="text-gray-600 max-w-2xl">
-                          Based on your responses, we've selected the perfect
-                          course to help you advance your Power BI skills.
-                        </p>
-                      </div>
-
-                      <button
-                        onClick={() =>
-                          window.open(recommendedCourse.url, "_blank")
-                        }
-                        className="relative group/btn bg-[#F1C714] hover:bg-[#F1C714]/90 text-black font-semibold px-8 py-3 rounded-full 
-                        shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center space-x-2 overflow-hidden"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-                        <span className="relative">Start Learning</span>
-                        <Trophy className="h-5 w-5 relative" />
-                      </button>
-                      <button
-                        onClick={handleStartAgain}
-                        className="relative group/btn bg-white hover:bg-gray-50 text-gray-800 font-semibold px-8 py-3 rounded-full 
-                        shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center space-x-2 border border-gray-200"
-                      >
-                        <span className="relative">Start Again</span>
-                      </button>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="h-full"
-              >
-                <Card className="h-full border-none shadow-xl overflow-hidden">
+        >          {!isLoading && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="max-w-5xl mx-auto"
+            >
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 rounded-3xl blur-lg opacity-40 group-hover:opacity-75 transition-all duration-1000"></div>
+                <Card className="relative overflow-hidden border-none shadow-2xl rounded-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-100/20 to-transparent animate-shimmer"></div>
                   <LadderVisualization
-                    recommendedCourse={recommendedCourse.name}
+                    recommendedCourse={recommendedCourse}
+                    onStartLearning={() => window.open(recommendedCourse.url, "_blank")}
+                    onStartAgain={handleStartAgain}
                   />
                 </Card>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           )}
           <Card className="border-none shadow-xl bg-white">
             <CardContent className="p-4 sm:p-8">
