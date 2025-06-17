@@ -39,9 +39,12 @@ export async function POST(request: Request) {
             "nextSteps": "Call to action message"
           }
           
-          Base this on their quiz score of ${score}, the recommended course ${
-            typeof course !== "string" ? course.name : course
-          }, and their answers. Make the ladderPositionDescription match the visual representation of the user's current step on the ladder image.`,
+          Base this on their quiz score of ${score}, the recommended course as per the following mapping:
+          - First Step - Power BI Essentials: if score is < 85
+          - Second Step - Power BI Service: if score is >= 85 and < 120
+          - Third Step - Power BI Report Design: if score is >= 120 and < 150
+          - Fourth Step - Power BI Advanced: if score is >= 150 and < 180
+          - Fifth Step - Power BI DAX Essentials: if score is >= 180`,
         },
         {
           role: "user",

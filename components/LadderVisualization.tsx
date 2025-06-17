@@ -28,10 +28,6 @@ const LadderVisualization: React.FC<LadderVisualizationProps> = ({
     return courseMap[course] || "1";
   };
 
-  if (recommendedCourse) {
-    console.log(`Recommended Course: `, recommendedCourse);
-  }
-
   return (
     <div className="relative w-full min-h-[600px] flex flex-col p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-white to-[#F1C714]/5">
       {/* Course Recommendation Section */}
