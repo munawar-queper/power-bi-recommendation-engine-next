@@ -29,7 +29,7 @@ export async function POST(request: Request) {
           Create a structured response in the following JSON format:
           {
             "title": "Your Learning Journey",
-            "currentSkills": "Brief assessment of their skill level based on score",
+            "currentSkills": "Brief assessment of their skill level based on score. Mentions the score count as well.",
             "ladderPositionDescription": "Describe the user's current position on the Power BI learning ladder image, referencing the step and what it means (e.g., 'You are on the third step: Power BI Report Design, which means you have solid foundational skills and are ready to focus on effective report building.')",
             "courseRecommendation": {
               "name": "Course name (must be one of the available courses)",
