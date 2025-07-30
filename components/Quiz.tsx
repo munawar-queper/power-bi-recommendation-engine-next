@@ -74,30 +74,25 @@ const Quiz: React.FC = () => {
   ) => {
     const combinedOptions = [...allSelectedOptions, ...selectedOptions]; // Determine recommended course based on score
     let course = { name: "", url: "" };
-    if (totalScore >= 180) {
+    if (totalScore >= 150) {
       course = {
         name: "Power BI DAX Essentials",
-        url: "https://powerbitraining.com.au/power-bi-basic-training-course/",
-      };
-    } else if (totalScore >= 150) {
-      course = {
-        name: "Power BI Advanced",
-        url: "https://powerbitraining.com.au/power-bi-service-course/",
+        url: "https://powerbitraining.com.au/dax-course/",
       };
     } else if (totalScore >= 120) {
+      course = {
+        name: "Power BI Advanced",
+        url: "https://powerbitraining.com.au/power-bi-advanced-training-course/",
+      };
+    } else if (totalScore >= 85) {
       course = {
         name: "Power BI Report Design",
         url: "https://powerbitraining.com.au/power-bi-report-design-course/",
       };
-    } else if (totalScore >= 85) {
-      course = {
-        name: "Power BI Service",
-        url: "https://powerbitraining.com.au/power-bi-advanced-training-course/",
-      };
     } else {
       course = {
         name: "Power BI Essentials",
-        url: "https://powerbitraining.com.au/dax-course/",
+        url: "https://powerbitraining.com.au/power-bi-basic-training-course/",
       };
     }
 

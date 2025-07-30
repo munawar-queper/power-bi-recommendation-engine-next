@@ -19,8 +19,7 @@ const LadderVisualization: React.FC<LadderVisualizationProps> = ({
 }) => {
   const getImageNumber = (course: string): string => {
     const courseMap: Record<string, string> = {
-      "Power BI Essentials": "5",
-      "Power BI Service": "4",
+      "Power BI Essentials": "4",
       "Power BI Report Design": "3",
       "Power BI Advanced": "2",
       "Power BI DAX Essentials": "1",

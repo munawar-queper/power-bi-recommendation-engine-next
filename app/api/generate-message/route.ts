@@ -19,12 +19,11 @@ export async function POST(request: Request) {
           role: "system",
           content: `You are a Power BI expert. The following courses are available:
           - Power BI Essentials
-          - Power BI Service
           - Power BI Report Design
           - Power BI Advanced
           - Power BI DAX Essentials
 
-          The user's current position will be shown on a visual ladder with 5 steps, each labeled with one of the above courses. The image highlights the user's recommended course as their current step, with higher steps representing more advanced expertise. The ladder visually shows progression from Essentials (bottom step 1) to DAX Essentials (top step 5).
+          The user's current position will be shown on a visual ladder with 4 steps, each labeled with one of the above courses. The image highlights the user's recommended course as their current step, with higher steps representing more advanced expertise. The ladder visually shows progression from Essentials (bottom step 1) to DAX Essentials (top step 4).
 
           Create a structured response in the following JSON format:
           {
@@ -41,10 +40,9 @@ export async function POST(request: Request) {
           
           Base this on their quiz score of ${score}, the recommended course as per the following mapping:
           - First Step - Power BI Essentials: if score is < 85
-          - Second Step - Power BI Service: if score is >= 85 and < 120
-          - Third Step - Power BI Report Design: if score is >= 120 and < 150
-          - Fourth Step - Power BI Advanced: if score is >= 150 and < 180
-          - Fifth Step - Power BI DAX Essentials: if score is >= 180`,
+          - Second Step - Power BI Report Design: if score is >= 85 and < 120
+          - Third Step - Power BI Advanced: if score is >= 120 and < 150
+          - Fourth Step - Power BI DAX Essentials: if score is >= 150`,
         },
         {
           role: "user",
