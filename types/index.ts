@@ -36,3 +36,30 @@ export interface OpenAIResponse {
   learningOutcomes: string[];
   nextSteps: string;
 }
+
+export interface SubmissionAnswer {
+  questionId: number;
+  question: string;
+  selectedOptionIds: number[];
+  selectedOptionText: string[];
+}
+
+export interface Submission {
+  id?: string;
+  email: string;
+  score: number;
+  recommendedCourse: string;
+  answersText: string;
+  answers: SubmissionAnswer[];
+  aiResponse: OpenAIResponse | string | null;
+  createdAt: string;
+}
+
+export interface AdminUser {
+  id?: string;
+  email: string;
+  name?: string;
+  role?: "admin" | "user";
+  createdAt: string;
+  lastSubmissionAt?: string;
+}

@@ -22,9 +22,6 @@ const Quiz: React.FC = () => {
     null
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [allSelectedOptions, setAllSelectedOptions] = useState<
-    SelectedOption[]
-  >([]);
 
   useEffect(() => {
     // Load initial questions
@@ -51,7 +48,6 @@ const Quiz: React.FC = () => {
   const handleNext = async (selectedOptions: SelectedOption[]) => {
     const score = calculateScore(selectedOptions);
     setTotalScore(score);
-    setAllSelectedOptions(selectedOptions);
 
     try {
       if (email) {
@@ -72,19 +68,21 @@ const Quiz: React.FC = () => {
     selectedOptions: SelectedOption[],
     configQuestions?: Question[]
   ) => {
-    const combinedOptions = [...allSelectedOptions, ...selectedOptions]; // Determine recommended course based on score
+    const score = calculateScore(selectedOptions);
+    setTotalScore(score);
+
     let course = { name: "", url: "" };
-    if (totalScore >= 150) {
+    if (score >= 150) {
       course = {
         name: "Power BI DAX Essentials",
         url: "https://powerbitraining.com.au/dax-course/",
       };
-    } else if (totalScore >= 120) {
+    } else if (score >= 120) {
       course = {
         name: "Power BI Advanced",
         url: "https://powerbitraining.com.au/power-bi-advanced-training-course/",
       };
-    } else if (totalScore >= 85) {
+    } else if (score >= 85) {
       course = {
         name: "Power BI Report Design",
         url: "https://powerbitraining.com.au/power-bi-report-design-course/",
@@ -104,26 +102,48 @@ const Quiz: React.FC = () => {
         configQuestions = await fetch("/config.json").then((res) => res.json());
       }
 
-      // Format answers string
-      const answersString = combinedOptions
-        .map((option) => {
-          const questionId = parseInt(option.name.split("-")[1]);
-          const questions = [...configQuestions!, ...currentQuestions];
-          const question = questions.find((q: Question) => q.id === questionId);
+      const questionLookup = new Map<number, Question>();
+      const mergedQuestions = [...(configQuestions ?? []), ...currentQuestions];
+      mergedQuestions.forEach((question) => {
+        if (!questionLookup.has(question.id)) {
+          questionLookup.set(question.id, question);
+        }
+      });
 
-          if (!question) return ""; // Skip if question not found
+      const mergedSelections = new Map<number, number[]>();
+      selectedOptions.forEach((option) => {
+        const questionId = parseInt(option.name.split("-")[1]);
+        const optionId = parseInt(option.value);
+        const existing = mergedSelections.get(questionId) || [];
+        if (!existing.includes(optionId)) {
+          mergedSelections.set(questionId, [...existing, optionId]);
+        }
+      });
 
-          const selectedOption = question.options.find(
-            (opt) => opt.id === parseInt(option.value)
-          );
-          const allOptions = question.options
-            .filter((opt) => opt.id !== parseInt(option.value))
-            .map((option) => option.text)
-            .join(", ");
+      const answers = Array.from(mergedSelections.entries()).map(
+        ([questionId, optionIds]) => {
+          const question = questionLookup.get(questionId);
+          const selectedOptionText =
+            question?.options
+              .filter((opt) => optionIds.includes(opt.id))
+              .map((opt) => opt.text) || [];
 
-          return `For "${question.question}", they selected: "${selectedOption?.text}". Other options are ${allOptions}.`;
-        })
-        .filter((str) => str !== "")
+          return {
+            questionId,
+            question: question?.question ?? `Question ${questionId}`,
+            selectedOptionIds: optionIds,
+            selectedOptionText,
+          };
+        }
+      );
+
+      const answersText = answers
+        .map(
+          ({ question, selectedOptionText }) =>
+            `For "${question}", they selected: "${selectedOptionText.join(
+              ", "
+            )}".`
+        )
         .join("\n");
 
       setIsLoading(true);
@@ -133,9 +153,11 @@ const Quiz: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          score: totalScore,
+          score,
           course: course,
-          answers: answersString,
+          answersText,
+          answers,
+          email,
         }),
       });
 
@@ -162,7 +184,6 @@ const Quiz: React.FC = () => {
     setRecommendedCourse({ name: "", url: "" });
     setAiResponse("");
     setTotalScore(0);
-    setAllSelectedOptions([]);
     setShowEmail(false);
     setEmail("");
   };

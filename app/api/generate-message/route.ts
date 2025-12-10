@@ -1,5 +1,8 @@
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
+import { Timestamp } from "firebase-admin/firestore";
+import { db } from "@/lib/firebase";
+import { Submission } from "@/types";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -8,10 +11,19 @@ const openai = new OpenAI({
 });
 
 export const maxDuration = 60;
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    const { score, course, answers } = await request.json();
+    const { score, course, answersText, answers, email } = await request.json();
+
+    if (!email) {
+      return NextResponse.json(
+        { error: "Email is required to submit the quiz" },
+        { status: 400 }
+      );
+    }
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -79,6 +91,50 @@ export async function POST(request: Request) {
         ],
         nextSteps: "Start your learning journey today!",
       };
+    }
+
+    const submission: Submission = {
+      email,
+      score,
+      recommendedCourse: typeof course === "string" ? course : course.name,
+      answersText: answersText ?? "",
+      answers: answers ?? [],
+      aiResponse: structuredResponse,
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      const submissionTimestamp = Timestamp.fromDate(
+        new Date(submission.createdAt)
+      );
+
+      await db.collection("submissions").add({
+        ...submission,
+        createdAt: submissionTimestamp,
+      });
+
+      const userRef = db.collection("users").doc(email);
+      const userSnapshot = await userRef.get();
+
+      if (userSnapshot.exists) {
+        await userRef.set(
+          {
+            lastSubmissionAt: submissionTimestamp,
+          },
+          { merge: true }
+        );
+      } else {
+        await userRef.set(
+          {
+            email,
+            createdAt: submissionTimestamp,
+            lastSubmissionAt: submissionTimestamp,
+          },
+          { merge: true }
+        );
+      }
+    } catch (error) {
+      console.error("Failed to persist submission or user:", error);
     }
 
     return NextResponse.json({ message: structuredResponse });
