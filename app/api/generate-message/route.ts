@@ -1,17 +1,19 @@
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
 import { Timestamp } from "firebase-admin/firestore";
-import { db } from "@/lib/firebase";
+import { getDb } from "@/lib/firebase";
 import { Submission } from "@/types";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  organization: process.env.OPENAI_ORG_ID,
-  project: process.env.OPENAI_PROJECT_ID,
-});
 
 export const maxDuration = 60;
 export const runtime = "nodejs";
+
+function getOpenAI(): OpenAI {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+    organization: process.env.OPENAI_ORG_ID,
+    project: process.env.OPENAI_PROJECT_ID,
+  });
+}
 
 export async function POST(request: Request) {
   try {
@@ -24,6 +26,7 @@ export async function POST(request: Request) {
       );
     }
 
+    const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -104,6 +107,7 @@ export async function POST(request: Request) {
     };
 
     try {
+      const db = getDb();
       const submissionTimestamp = Timestamp.fromDate(
         new Date(submission.createdAt)
       );

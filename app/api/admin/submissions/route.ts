@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Timestamp } from "firebase-admin/firestore";
-import { db } from "@/lib/firebase";
+import { getDb } from "@/lib/firebase";
 import { requireAdminToken } from "@/lib/adminAuth";
 import { Submission } from "@/types";
 
@@ -11,6 +11,7 @@ export async function GET(request: Request) {
   if (authResponse) return authResponse;
 
   try {
+    const db = getDb();
     const { searchParams } = new URL(request.url);
     const limitParam = Number(searchParams.get("limit"));
     const limit = Number.isFinite(limitParam)
