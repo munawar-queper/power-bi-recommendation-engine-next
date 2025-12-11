@@ -12,6 +12,16 @@ if (!projectId || !clientEmail || !privateKey) {
   );
 }
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCVXsZhm4rOj__G3WDqZO0sVJojgtakVwM",
+//   authDomain: "amz-recommendation-engine.firebaseapp.com",
+//   projectId: "amz-recommendation-engine",
+//   storageBucket: "amz-recommendation-engine.firebasestorage.app",
+//   messagingSenderId: "675333287972",
+//   appId: "1:675333287972:web:8ad449375f41d828ffe8b1",
+//   measurementId: "G-4H1HF10EE7"
+// };
+
 const app = getApps().length
   ? getApp()
   : initializeApp({
