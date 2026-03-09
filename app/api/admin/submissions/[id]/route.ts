@@ -14,13 +14,13 @@ function normalizeTimestamp(value: unknown): string {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authResponse = await requireAdminToken(request);
   if (authResponse) return authResponse;
 
   try {
-    const { id } = params;
+    const { id } = await params;
     const submissionId = decodeURIComponent(id);
     const db = getDb();
 
