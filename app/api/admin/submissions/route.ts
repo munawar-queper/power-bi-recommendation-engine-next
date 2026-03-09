@@ -7,13 +7,14 @@ import { Submission } from "@/types";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const authResponse = requireAdminToken(request);
+  const authResponse = await requireAdminToken(request);
   if (authResponse) return authResponse;
 
   try {
     const db = getDb();
     const { searchParams } = new URL(request.url);
     const limitParam = Number(searchParams.get("limit"));
+    const query = searchParams.get("q")?.trim().toLowerCase() || "";
     const limit = Number.isFinite(limitParam)
       ? Math.min(Math.max(limitParam, 1), 200)
       : 50;
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
       .limit(limit)
       .get();
 
-    const submissions: Submission[] = snapshot.docs.map((doc) => {
+    const allSubmissions: Submission[] = snapshot.docs.map((doc) => {
       const data = doc.data();
       const createdAt =
         data.createdAt instanceof Timestamp
@@ -42,6 +43,16 @@ export async function GET(request: Request) {
         createdAt,
       };
     });
+
+    const submissions = query
+      ? allSubmissions.filter((submission) => {
+          return (
+            submission.email?.toLowerCase().includes(query) ||
+            submission.recommendedCourse?.toLowerCase().includes(query) ||
+            submission.answersText?.toLowerCase().includes(query)
+          );
+        })
+      : allSubmissions;
 
     return NextResponse.json({ submissions });
   } catch (error) {

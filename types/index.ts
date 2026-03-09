@@ -63,3 +63,69 @@ export interface AdminUser {
   createdAt: string;
   lastSubmissionAt?: string;
 }
+
+export interface AdminCourseDistribution {
+  course: string;
+  count: number;
+}
+
+export interface AdminDailyTrendPoint {
+  date: string;
+  count: number;
+}
+
+export interface AdminTopCategory {
+  label: string;
+  count: number;
+}
+
+export interface AdminNotificationHealth {
+  sent: number;
+  failed: number;
+}
+
+export interface AdminAnalyticsResponse {
+  totals: {
+    submissions: number;
+    users: number;
+    submissionsThisWeek: number;
+  };
+  recommendationDistribution: AdminCourseDistribution[];
+  dailyTrend: AdminDailyTrendPoint[];
+  topCategories: AdminTopCategory[];
+  notificationHealth: AdminNotificationHealth;
+}
+
+export interface SmtpSettings {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  secure: boolean;
+  fromEmail: string;
+  notifyToEmail: string;
+  notificationsEnabled: boolean;
+}
+
+export interface SmtpSettingsResponse {
+  host: string;
+  port: number;
+  username: string;
+  secure: boolean;
+  fromEmail: string;
+  notifyToEmail: string;
+  notificationsEnabled: boolean;
+  hasPassword: boolean;
+}
+
+export interface SmtpSettingsDocument {
+  host: string;
+  port: number;
+  username: string;
+  encryptedPassword: string;
+  secure: boolean;
+  fromEmail: string;
+  notifyToEmail: string;
+  notificationsEnabled: boolean;
+  updatedAt: string;
+}

@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import { NextResponse } from "next/server";
 import { Timestamp } from "firebase-admin/firestore";
 import { getDb } from "@/lib/firebase";
+import { sendAdminSubmissionAlert } from "@/lib/mailer";
 import { Submission } from "@/types";
 
 export const maxDuration = 60;
@@ -136,6 +137,17 @@ export async function POST(request: Request) {
           },
           { merge: true }
         );
+      }
+
+      try {
+        await sendAdminSubmissionAlert({
+          submissionEmail: submission.email,
+          score: submission.score,
+          recommendedCourse: submission.recommendedCourse,
+          createdAt: submission.createdAt,
+        });
+      } catch (mailError) {
+        console.error("Failed to send admin notification email:", mailError);
       }
     } catch (error) {
       console.error("Failed to persist submission or user:", error);

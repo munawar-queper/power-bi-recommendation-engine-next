@@ -7,13 +7,14 @@ import { AdminUser } from "@/types";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const authResponse = requireAdminToken(request);
+  const authResponse = await requireAdminToken(request);
   if (authResponse) return authResponse;
 
   try {
     const db = getDb();
     const { searchParams } = new URL(request.url);
     const limitParam = Number(searchParams.get("limit"));
+    const query = searchParams.get("q")?.trim().toLowerCase() || "";
     const limit = Number.isFinite(limitParam)
       ? Math.min(Math.max(limitParam, 1), 200)
       : 100;
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
       .limit(limit)
       .get();
 
-    const users: AdminUser[] = snapshot.docs.map((doc) => {
+    const allUsers: AdminUser[] = snapshot.docs.map((doc) => {
       const data = doc.data();
       const createdAt =
         data.createdAt instanceof Timestamp
@@ -45,6 +46,16 @@ export async function GET(request: Request) {
         lastSubmissionAt,
       };
     });
+
+    const users = query
+      ? allUsers.filter((user) => {
+          return (
+            user.email?.toLowerCase().includes(query) ||
+            user.name?.toLowerCase().includes(query) ||
+            user.role?.toLowerCase().includes(query)
+          );
+        })
+      : allUsers;
 
     return NextResponse.json({ users });
   } catch (error) {
